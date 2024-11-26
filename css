@@ -9,7 +9,7 @@ body {
     height: 100vh;
 }
 
-.input-form, .catalog {
+.input-form, .catalog, .cart {
     background-color: #ffffff;
     padding: 20px;
     border-radius: 8px;
@@ -23,54 +23,48 @@ body {
     flex-direction: column;
 }
 
-.product-item {
-    border-bottom: 1px solid #ccc;
-    padding: 10px 0;
+.items {
+    display: flex;
+    flex-direction: column; /* Mengatur item dalam kolom */
 }
 
-.product-item:last-child {
+.catalog-item {
+    border-bottom: 1px solid #ccc;
+    padding-bottom: 10px;
+}
+
+.catalog-item:last-child {
     border-bottom: none; /* Menghapus garis bawah pada produk terakhir */
 }
 
-.product-item h3 {
-    margin: 0; /* Menghapus margin default */
+.catalog-item img {
+    max-width: 100%; /* Memastikan gambar responsif */
+    height: auto; /* Mempertahankan rasio aspek gambar */
 }
 
-.product-item p {
-    margin: 5px 0; /* Menambahkan margin pada paragraf */
+.catalog-item h3 {
+    margin-top: 5px; /* Menambahkan jarak atas */
 }
 
 input {
     width: calc(100% - 22px); /* Menghitung lebar dengan padding dan border */
     padding: 10px;
-    margin: 10px auto; /* Mengatur margin otomatis untuk pusat */
-    border: 1px solid #ccc;
+    margin-top: 10px; /* Menambahkan margin atas */
     border-radius: 4px;
-    font-size: 14px;
 }
 
 button {
     width: calc(50% - 12px); /* Menghitung lebar dengan margin */
     padding: 10px;
-    margin: 10px 1%;
-    border: none;
+    margin-top: 10px; /* Menambahkan margin atas */
     border-radius: 4px;
-    font-size: 14px;
-    cursor: pointer;
-    background-color: #FFA07A;
-    color: white;
-    transition: background-color 0.3s, transform 0.3s; /* Tambahkan transisi untuk transform */
+    cursor:pointer; 
 }
 
 button:hover {
-    background-color: #8B0000; /* Warna saat hover */
-    transform: translateY(-3px); /* Efek angkat saat hover */
+    background-color:#FFA07A; 
 }
 
 button#cancel {
-    background-color: #6c757d; /* Warna tombol cancel */
-}
-
-button#cancel:hover {
-    background-color: #5a6268; /* Warna saat hover untuk cancel */
+   background-color:#6c757d; 
 }
