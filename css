@@ -1,4 +1,3 @@
-
 body {
     font-family: Arial, sans-serif;
     background-color: #87CEFA;
@@ -10,7 +9,7 @@ body {
     height: 100vh;
 }
 
-.input-form {
+.input-form, .catalog, .cart {
     background-color: #ffffff;
     padding: 20px;
     border-radius: 8px;
@@ -19,39 +18,59 @@ body {
     text-align: center;
 }
 
+.catalog {
+    display: flex;
+    flex-direction: column;
+}
+
+.items {
+    display: flex;
+    flex-direction: column; /* Mengatur item dalam kolom */
+}
+
+.catalog-item {
+    border-bottom: 1px solid #ccc;
+    padding-bottom: 10px;
+}
+
+.catalog-item:last-child {
+    border-bottom: none; /* Menghapus garis bawah pada produk terakhir */
+}
+
+.catalog-item img {
+    max-width: 100%; /* Memastikan gambar responsif */
+    height:auto; /* Mempertahankan rasio aspek gambar */
+}
+
+.catalog-item h3 {
+    margin-top: 5px; /* Menambahkan jarak atas */
+}
 
 input {
-    width: 90%;
-    max-width: 90%;
+    width: calc(100% - 22px); /* Menghitung lebar dengan padding dan border */
     padding: 10px;
-    margin: 10px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    font-size: 14px;
+    margin-top: 10px; /* Menambahkan margin atas */
 }
 
 button {
-    width: 48%;
+    width: calc(50% - 12px); /* Menghitung lebar dengan margin */
     padding: 10px;
-    margin: 10px 1%;
-    border: none;
+    margin-top: 10px; /* Menambahkan margin atas */
     border-radius: 4px;
-    font-size: 14px;
-    cursor: pointer;
-    background-color: #FFA07A;
-    color: white;
-    transition: background-color 0.3s;
+    cursor:pointer; 
+}
+
+button#login, button#view-cart, button#checkout, button#clear-cart {
+   background-color:#FFA07A; 
+   color:white; 
+   border:none; 
+   transition:.3s; 
 }
 
 button:hover {
-    background-color: #8B0000;
-    transform: translateY(-3px);
+   background-color:#FF6347; 
 }
 
 button#cancel {
-    background-color: #6c757d;
-}
-
-button#cancel:hover {
-    background-color: #5a6268;
+   background-color:#6c757d; 
 }
