@@ -18,10 +18,10 @@
                 { username: 'salsadila', pin: 'salsadila05' },
             ],
             catalog: [
-                { id: 1, name: 'Kacamata', price: '15000', image: 'https://i.pinimg.com/736x/f8/b6/2d/f8b62d18c0bb253234ced500f369ffaa.jpg' },
-                { id: 2, name: 'Ikat Rambut', price: '10000', image: 'https://i.pinimg.com/236x/05/4a/69/054a69dd25e7fdf6217b43d44965950d.jpg' },
-                { id: 3, name: 'Headphones', price: '150000', image: 'https://i.pinimg.com/474x/bb/1c/7d/bb1c7d504768c99da8d6308716f2d097.jpg' },
-                { id: 4, name: 'Kipas Angin Mini', price: '60000', image: 'https://i.pinimg.com/236x/81/ca/56/81ca5677ea1e85f0122274a78adaa4e6.jpg' },  
+                { id: 1, name: 'Kacamata', price: 15000, image: 'https://i.pinimg.com/736x/f8/b6/2d/f8b62d18c0bb253234ced500f369ffaa.jpg' },
+                { id: 2, name: 'Ikat Rambut', price: 10000, image: 'https://i.pinimg.com/236x/05/4a/69/054a69dd25e7fdf6217b43d44965950d.jpg' },
+                { id: 3, name: 'Headphones', price: 150000, image: 'https://i.pinimg.com/474x/bb/1c/7d/bb1c7d504768c99da8d6308716f2d097.jpg' },
+                { id: 4, name: 'Kipas Angin Mini', price: 60000, image: 'https://i.pinimg.com/236x/81/ca/56/81ca5677ea1e85f0122274a78adaa4e6.jpg' },  
             ],
             cart: [],
         };
@@ -31,6 +31,7 @@
             renderLoginForm: function () {
                 return `
                     <div class="input-form">
+                        <h2>Login</h2>
                         Username: <input type='text' id='username'><br/>
                         Pin: <input type='password' id='pin'><br/>
                         <button id='login'>Login</button>
@@ -43,7 +44,7 @@
                     <div class="catalog-item" data-id="${item.id}">
                         <img src="${item.image}" alt="${item.name}">
                         <h3>${item.name}</h3>
-                        <p><strong>Rp ${item.price}</strong></p>
+                        <p><strong>Rp ${item.price.toLocaleString()}</strong></p>
                         <button class="add-to-cart">Add to Cart</button>
                     </div>
                 `).join('');
@@ -59,10 +60,10 @@
                 const items = model.cart.map(item => `
                     <div class="cart-item">
                         <h3>${item.name}</h3>
-                        <p>Rp ${item.price}</p>
+                        <p>Rp ${item.price.toLocaleString()}</p>
                     </div>
                 `).join('');
-                const total = model.cart.reduce((sum, item) => sum + parseFloat(item.price), 0).toFixed(2);
+                const total = model.cart.reduce((sum, item) => sum + item.price, 0).toLocaleString();
                 return `
                     <div class="cart">
                         <h2>Your Cart</h2>
@@ -139,7 +140,6 @@
 
             checkout: function () {
                 alert('Proceeding to checkout...');
-                // Implement checkout functionality (e.g., payment, final order confirmation)
             },
 
             clearCart: function () {
