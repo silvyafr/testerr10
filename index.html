@@ -1,92 +1,157 @@
-<!DOCTYPE html> 
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login Form</title>
+    <title>Login Form with Catalog (MVC)</title>
     <link rel="stylesheet" href="./pertemuan10.css">
 </head>
 <body>
     <div id="app"></div>
 
     <script>
-        const pbo = {
-            // Model untuk database
-            model: {
-                mahasiswa: [
-                    { username: 'silvy', pin: 'silvy17' },
-                    { username: 'afrilia', pin: 'afrilia04' },
-                    { username: 'salsadila', pin: 'salsadila05' },
-                ],
-                produk: [
-                    { id: 1, nama: 'Produk A', harga: 10000 },
-                    { id: 2, nama: 'Produk B', harga: 20000 },
-                    { id: 3, nama: 'Produk C', harga: 30000 },
-                ],
+        // Model: Handles the data and logic
+        const model = {
+            mahasiswa: [
+                { username: 'silvy', pin: 'silvy17' },
+                { username: 'afrilia', pin: 'afrilia04' },
+                { username: 'salsadila', pin: 'salsadila05' },
+            ],
+            catalog: [
+                { id: 1, name: 'Kacamata', price: '15.000', image: 'https://i.pinimg.com/736x/f8/b6/2d/f8b62d18c0bb253234ced500f369ffaa.jpg' },
+                { id: 2, name: 'Ikat Rambut', price: '10.000', image: 'https://i.pinimg.com/236x/05/4a/69/054a69dd25e7fdf6217b43d44965950d.jpg' },
+                { id: 3, name: 'Headphones', price: '150.000', image: 'https://i.pinimg.com/474x/bb/1c/7d/bb1c7d504768c99da8d6308716f2d097.jpg' },
+                { id: 4, name: 'Kipas Angin Mini', price: '60.000', image: 'https://i.pinimg.com/236x/81/ca/56/81ca5677ea1e85f0122274a78adaa4e6.jpg' },  
+            ],
+            cart: [],
+        };
+
+        // View: Manages the display of the HTML elements
+        const view = {
+            renderLoginForm: function () {
+                return `
+                    <div class="input-form">
+                        Username: <input type='text' id='username'><br/>
+                        Pin: <input type='password' id='pin'><br/>
+                        <button id='login'>Login</button>
+                        <button id='cancel'>Cancel</button>
+                    </div>
+                `;
             },
-            // View untuk tampilan
-            view: {
-                signform: function () {
-                    return `
-                        <div class="input-form">
-                            Username: <input type='text' id='username'><br/>
-                            Pin: <input type='password' id='pin'><br/>
-                            <button id='login'>Login</button>
-                            <button id='cancel'>Cancel</button>
-                        </div>
-                    `;
-                },
-                catalog: function () {
-                    return `
-                        <h2>Katalog Produk</h2>
-                        <div class="catalog">
-                            ${pbo.model.produk.map(product => `
-                                <div class="product-item">
-                                    <h3>${product.nama}</h3>
-                                    <p>Harga: Rp ${product.harga}</p>
-                                </div>
-                            `).join('')}
-                        </div>
-                    `;
-                }
+            renderCatalog: function () {
+                const items = model.catalog.map(item => `
+                    <div class="catalog-item" data-id="${item.id}">
+                        <img src="${item.image}" alt="${item.name}">
+                        <h3>${item.name}</h3>
+                        <p>${item.description}</p>
+                        <p><strong>${item.price}</strong></p>
+                        <button class="add-to-cart">Add to Cart</button>
+                    </div>
+                `).join('');
+                return `
+                    <div class="catalog">
+                        <h2>Catalog</h2>
+                        <div class="items">${items}</div>
+                        <button id="view-cart">View Cart</button>
+                    </div>
+                `;
             },
-
-            // Controller untuk perlakuan terhadap view dan database
-            controller: {
-                init: function () {
-                    const app = document.getElementById('app'); 
-                    app.innerHTML = pbo.view.signform();
-                    
-                    document.getElementById('login').addEventListener('click', this.signin);
-                    document.getElementById('cancel').addEventListener('click', this.signout);
-                },
-                
-                signin: function () {
-                    const username = document.getElementById('username').value;
-                    const pin = document.getElementById('pin').value;
-
-                    const userFound = pbo.model.mahasiswa.find(
-                        (user) => user.username === username && user.pin === pin
-                    );
-
-                    if (userFound) {
-                        alert('Login berhasil!');
-                        const app = document.getElementById('app');
-                        app.innerHTML = pbo.view.catalog(); // Tampilkan katalog setelah login
-                    } else {
-                        alert('Username atau Pin salah!');
-                    }
-                },
-                
-                signout: function () {
-                    document.getElementById('username').value = '';
-                    document.getElementById('pin').value = '';
-                },
+            renderCart: function () {
+                const items = model.cart.map(item => `
+                    <div class="cart-item">
+                        <h3>${item.name}</h3>
+                        <p>${item.price}</p>
+                    </div>
+                `).join('');
+                const total = model.cart.reduce((sum, item) => sum + parseFloat(item.price.replace('$', '')), 0).toFixed(2);
+                return `
+                    <div class="cart">
+                        <h2>Your Cart</h2>
+                        <div class="items">${items}</div>
+                        <p><strong>Total: $${total}</strong></p>
+                        <button id="checkout">Checkout</button>
+                        <button id="clear-cart">Clear Cart</button>
+                    </div>
+                `;
             },
         };
 
-        // Inisialisasi programnya
-        pbo.controller.init();
+        // Controller: Coordinates the interaction between Model and View
+        const controller = {
+            init: function () {
+                const app = document.getElementById('app');
+                app.innerHTML = view.renderLoginForm(); // Render the login form initially
+
+                document.getElementById('login').addEventListener('click', this.login);
+                document.getElementById('cancel').addEventListener('click', this.clearFields);
+            },
+
+            login: function () {
+                const username = document.getElementById('username').value;
+                const pin = document.getElementById('pin').value;
+
+                const user = model.mahasiswa.find(
+                    (user) => user.username === username && user.pin === pin
+                );
+
+                if (user) {
+                    alert('Login successful!');
+                    controller.showCatalog(); // Show catalog after successful login
+                } else {
+                    alert('Incorrect username or pin!');
+                }
+            },
+
+            clearFields: function () {
+                document.getElementById('username').value = '';
+                document.getElementById('pin').value = '';
+            },
+
+            showCatalog: function () {
+                const app = document.getElementById('app');
+                app.innerHTML = view.renderCatalog(); // Show catalog view
+
+                // Attach event listener to "Add to Cart" buttons
+                const addToCartButtons = document.querySelectorAll('.add-to-cart');
+                addToCartButtons.forEach(button => {
+                    button.addEventListener('click', controller.addToCart);
+                });
+
+                document.getElementById('view-cart').addEventListener('click', controller.showCart);
+            },
+
+            addToCart: function (e) {
+                const itemId = e.target.closest('.catalog-item').getAttribute('data-id');
+                const item = model.catalog.find(item => item.id == itemId);
+
+                if (item) {
+                    model.cart.push(item); // Add item to cart
+                    alert(${item.name} added to your cart!);
+                }
+            },
+
+            showCart: function () {
+                const app = document.getElementById('app');
+                app.innerHTML = view.renderCart(); // Show cart view
+
+                document.getElementById('checkout').addEventListener('click', this.checkout);
+                document.getElementById('clear-cart').addEventListener('click', this.clearCart);
+            },
+
+            checkout: function () {
+                alert('Proceeding to checkout...');
+                // Implement checkout functionality (e.g., payment, final order confirmation)
+            },
+
+            clearCart: function () {
+                model.cart = []; // Clear the cart
+                alert('Your cart has been cleared.');
+                controller.showCart(); // Refresh the cart view
+            }
+        };
+
+        // Initialize the application
+        controller.init();
     </script>
 </body>
 </html>
