@@ -18,23 +18,39 @@ body {
     text-align: center;
 }
 
+.catalog {
+    display: flex;
+    flex-direction: column;
+}
+
 .product-item {
     border-bottom: 1px solid #ccc;
     padding: 10px 0;
 }
 
+.product-item:last-child {
+    border-bottom: none; /* Menghapus garis bawah pada produk terakhir */
+}
+
+.product-item h3 {
+    margin: 0; /* Menghapus margin default */
+}
+
+.product-item p {
+    margin: 5px 0; /* Menambahkan margin pada paragraf */
+}
+
 input {
-    width: 90%;
-    max-width: 90%;
+    width: calc(100% - 22px); /* Menghitung lebar dengan padding dan border */
     padding: 10px;
-    margin: 10px;
+    margin: 10px auto; /* Mengatur margin otomatis untuk pusat */
     border: 1px solid #ccc;
     border-radius: 4px;
     font-size: 14px;
 }
 
 button {
-    width: 48%;
+    width: calc(50% - 12px); /* Menghitung lebar dengan margin */
     padding: 10px;
     margin: 10px 1%;
     border: none;
@@ -43,18 +59,18 @@ button {
     cursor: pointer;
     background-color: #FFA07A;
     color: white;
-    transition: background-color 0.3s;
+    transition: background-color 0.3s, transform 0.3s; /* Tambahkan transisi untuk transform */
 }
 
 button:hover {
-    background-color: #8B0000;
-    transform: translateY(-3px);
+    background-color: #8B0000; /* Warna saat hover */
+    transform: translateY(-3px); /* Efek angkat saat hover */
 }
 
 button#cancel {
-    background-color: #6c757d;
+    background-color: #6c757d; /* Warna tombol cancel */
 }
 
 button#cancel:hover {
-    background-color: #5a6268;
+    background-color: #5a6268; /* Warna saat hover untuk cancel */
 }
