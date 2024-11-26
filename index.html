@@ -1,0 +1,84 @@
+<script>
+    const pbo = {
+        // Model untuk database
+        model: {
+            mahasiswa: [
+                { username: 'silvy', pin: 'silvy17' },
+                { username: 'afrilia', pin: 'afrilia04' },
+                { username: 'salsadila', pin: 'salsadila05' },
+            ],
+            produk: [
+                { nama: 'Laptop', harga: '15.000.000' },
+                { nama: 'Smartphone', harga: '5.000.000' },
+                { nama: 'Headphone', harga: '500.000' },
+                { nama: 'Mouse Gaming', harga: '300.000' },
+            ],
+        },
+
+        // View untuk tampilan
+        view: {
+            signform: function () {
+                return `
+                    <div class="input-form">
+                        Username: <input type='text' id='username'><br/>
+                        Pin: <input type='password' id='pin'><br/>
+                        <button id='login'>Login</button>
+                        <button id='cancel'>Cancel</button>
+                    </div>
+                    <div id="product-catalog">
+                        <h3>Katalog Produk</h3>
+                        <ul id="product-list"></ul>
+                    </div>
+                `;
+            },
+
+            renderProduk: function () {
+                const productList = document.getElementById('product-list');
+                const produk = pbo.model.produk;
+                productList.innerHTML = produk
+                    .map(
+                        (item) =>
+                            `<li><strong>${item.nama}</strong> - Rp ${item.harga}</li>`
+                    )
+                    .join('');
+            },
+        },
+
+        // Controller untuk perlakuan terhadap view dan database
+        controller: {
+            init: function () {
+                const app = document.getElementById('app');
+                app.innerHTML = pbo.view.signform();
+                
+                document.getElementById('login').addEventListener('click', this.signin);
+                document.getElementById('cancel').addEventListener('click', this.signout);
+                
+                // Render katalog produk
+                pbo.view.renderProduk();
+            },
+
+            signin: function () {
+                const username = document.getElementById('username').value;
+                const pin = document.getElementById('pin').value;
+
+                const userFound = pbo.model.mahasiswa.find(
+                    (user) => user.username === username && user.pin === pin
+                );
+
+                if (userFound) {
+                    alert('Login berhasil!');
+                } else {
+                    alert('Username atau Pin salah!');
+                }
+            },
+
+            signout: function () {
+                document.getElementById('username').value = '';
+                document.getElementById('pin').value = '';
+            },
+        },
+    };
+
+    // Inisialisasi programnya
+    pbo.controller.init();
+</script>
