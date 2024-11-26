@@ -39,7 +39,7 @@ body {
 
 .catalog-item img {
     max-width: 100%; /* Memastikan gambar responsif */
-    height: auto; /* Mempertahankan rasio aspek gambar */
+    height:auto; /* Mempertahankan rasio aspek gambar */
 }
 
 .catalog-item h3 {
@@ -50,7 +50,6 @@ input {
     width: calc(100% - 22px); /* Menghitung lebar dengan padding dan border */
     padding: 10px;
     margin-top: 10px; /* Menambahkan margin atas */
-    border-radius: 4px;
 }
 
 button {
@@ -61,8 +60,15 @@ button {
     cursor:pointer; 
 }
 
+button#login, button#view-cart, button#checkout, button#clear-cart {
+   background-color:#FFA07A; 
+   color:white; 
+   border:none; 
+   transition:.3s; 
+}
+
 button:hover {
-    background-color:#FFA07A; 
+   background-color:#FF6347; 
 }
 
 button#cancel {
